@@ -37,7 +37,7 @@ alias gdc='git diff --color-words --cached'
 alias gl='git log --oneline --graph --decorate --all'
 alias gcp='git cherry-pick'
 alias gmt='git mergetool'
-alias quiet='echo silent | sudo tee /sys/devices/platform/sony-laptop/thermal_control'
+
 gitLinesChangedUser() {
   git log --author="$1" --since="$2" --pretty=tformat: --numstat \
 | gawk '{ add += $1 ; subs += $2 ; loc += $1 - $2 } END { printf "added lines: %s removed lines : %s total lines: %s\n",add,subs,loc }' -
