@@ -107,7 +107,7 @@ fi;
 if [[ "${USER}" == "root" ]]; then
   userStyle="${red}";
 else
-  userStyle="${orange}";
+  userStyle="${green}";
 fi;
 
 # Highlight the hostname when connected via SSH.
@@ -125,7 +125,7 @@ PS1+="\[${userStyle}\]\u"; # username
 # PS1+="\[${white}\] at ";
 # PS1+="\[${hostStyle}\]\h"; # host
 PS1+="\[${white}\] ";
-PS1+="\[${green}\]\w"; # working directory
+PS1+="\[${blue}\]\w"; # working directory
 PS1+="\$(prompt_git \"${white} ${violet}\")"; # Git repository details
 PS1+=" \[${white}\]\$ \[${reset}\]"; # `$` (and reset color)
 export PS1;
