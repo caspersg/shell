@@ -1,6 +1,6 @@
 
 # general aliases
-alias ss='source ~/.bash_profile'
+alias sb='source ~/.bash_profile'
 
 # enable color support of ls and also add handy aliases
 if [ -x /usr/bin/dircolors ]; then
@@ -31,16 +31,20 @@ alias gca='git commit --amend'
 alias gs='git status'
 alias gps='git push'
 alias gco='git checkout'
-alias gcop='git checkout -p'
+alias gcop='gco -p'
+alias gcob='gco -b'
 alias gss='git stash'
 alias gsp='git stash pop'
-alias gpl='git pull'
-alias gppl='gco target && git pull'
+alias gpl='git pull --rebase'
+alias gppl='gco target && gpl'
 alias gd='git diff --color-words'
 alias gdc='git diff --color-words --cached'
+alias gdn='gd --name-only'
 alias gl='git log --oneline --graph --decorate --all'
 alias gcp='git cherry-pick'
 alias gmt='git mergetool'
+alias gmm='gss && gco master && gpl && gco - && git merge master'
+alias grm='gco master && gpl && gco - && git rebase master'
 
 gitLinesChangedUser() {
   git log --author="$1" --since="$2" --pretty=tformat: --numstat \
@@ -51,6 +55,7 @@ alias gcommits='git shortlog -sn'
 
 alias ber='bundle exec rake'
 alias be='bundle exec'
+alias bic='bundle install && bundle clean --force'
 
 # function instead of alias for arguments
 
@@ -60,4 +65,10 @@ gcm() {
 
 kl() {
   kill -9 %$1
+}
+
+untilfail() {
+  count=0
+  while ($*); do (( count++ )); done
+  echo "failed on attempt $count"
 }

@@ -9,6 +9,10 @@ elif infocmp xterm-256color >/dev/null 2>&1; then
   export TERM='xterm-256color';
 fi;
 
+
+source /usr/local/etc/bash_completion.d/git-completion.bash
+GIT_PS1_SHOWDIRTYSTATE=true
+
 prompt_git() {
   local s='';
   local branchName='';
@@ -58,7 +62,7 @@ prompt_git() {
 
     [ -n "${s}" ] && s=" ${s}";
 
-    echo -e "${colour}${branchName}${blue}${s}";
+    echo -e "${colour}${branchName}${orange}${s}";
   else
     return;
   fi;
@@ -71,6 +75,15 @@ rvm_version() {
   [ "$version" != "" ] && version="$version"
   local full="$version$gemset"
   [ "$full" != "" ] && echo "$full"
+}
+
+last_command_failure() {
+  local code="$?"
+  if [[ $code == 0  ]]; then
+    echo "$green$code"
+  else
+    echo "$red$code"
+  fi
 }
 
 if tput setaf 1 &> /dev/null; then
@@ -119,6 +132,7 @@ fi;
 
 # Set the terminal title to the current working directory.
 PS1="\[\033]0;\w\007\]";
+PS1+="\$(last_command_failure)"; # last command success/failure
 PS1+="\[${bold}\]\n"; # newline
 # PS1+="(\$(rvm_version)) "; # rvm gemset
 PS1+="\[${userStyle}\]\u"; # username
