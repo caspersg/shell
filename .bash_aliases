@@ -56,7 +56,7 @@ gcm() { git commit -m "$*"; }
 ber() { bundle exec rake $*; }
 be() { bundle exec $*; }
 binc() { bundle install --no-deployment && bundle clean --force; }
-dabv() { rm -rf ../**/.bundle; rm -rf ../**/vendor; }
+dbv() { rm -rf .bundle vendor; }
 
 
 # system
@@ -68,9 +68,20 @@ untilfail() {
   echo "failed on attempt $count"
 }
 
+forEachIn() {
+  for ITEM in `ls $1`
+  do
+    echo "for $1/$ITEM $2"
+    pushd $1/$ITEM
+    eval $2
+    popd
+  done
+}
+
 forprojects() {
   for PROJ in `ls $PROJECTS`
   do
+    echo "for $PROJECTS/$PROJ $1"
     pushd $PROJECTS/$PROJ
     eval $1
     popd
