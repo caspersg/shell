@@ -1,7 +1,4 @@
 
-# general aliases
-alias sb='source ~/.bash_profile'
-
 # enable color support of ls and also add handy aliases
 if [ -x /usr/bin/dircolors ]; then
     test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
@@ -14,61 +11,75 @@ if [ -x /usr/bin/dircolors ]; then
     alias egrep='egrep --color=auto'
 fi
 
-# some more ls aliases
-alias ll='ls -alF'
-alias la='ls -A'
-alias l='ls -CF'
+# general aliases/functions
+alias sbp='source ~/.bash_profile'
 
-# Add an "alert" alias for long running commands.  Use like so:
-#   sleep 10; alert
-alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
+e() { subl $*; }
+ebp() { e ~/.bash_profile ~/.bash_aliases ; }
+ll() { ls -alF $*; }
+la() { ls -A $*; }
+l() { ls -CF $*; }
 
-alias clip='xclip -se c'
+# osx
+clip() { xclip -se c ;}
 
-alias ga='git add -p'
-alias gc='git commit'
-alias gca='git commit --amend'
-alias gs='git status'
-alias gps='git push'
-alias gco='git checkout'
-alias gcop='gco -p'
-alias gcob='gco -b'
-alias gss='git stash'
-alias gsp='git stash pop'
-alias gpl='git pull --rebase'
-alias gppl='gco target && gpl'
-alias gd='git diff --color-words'
-alias gdc='git diff --color-words --cached'
-alias gdn='gd --name-only'
-alias gl='git log --oneline --graph --decorate --all'
-alias gcp='git cherry-pick'
-alias gmt='git mergetool'
-alias gmm='gss && gco master && gpl && gco - && git merge master'
-alias grm='gco master && gpl && gco - && git rebase master'
-
-gitLinesChangedUser() {
+# git
+ga() { git add -p $*; }
+gc() { git commit $*; }
+gca() { git commit --amend; }
+gs() { git status; }
+gps() { git push; }
+gco() { git checkout $*; }
+gcop() { gco -p $*; }
+gcob() { gco -b $*; }
+gss() { git stash; }
+gsp() { git stash pop; }
+gpl() { git pull --rebase; }
+gppl() { gco target && gpl; }
+gd() { git diff --color-words $*; }
+gdc() { git diff --color-words --cached $*; }
+gdn() { gd --name-only $*; }
+gl() { git log --oneline --graph --decorate --all; }
+gcp() { git cherry-pick $*; }
+gmt() { git mergetool; }
+gmm() { gss && gco master && gpl && gco - && git merge master; }
+grm() { gco master && gpl && gco - && git rebase master; }
+gpristine() { git reset --hard && git clean -dfx; }
+gcommits() { git shortlog -sn; }
+glines() {
   git log --author="$1" --since="$2" --pretty=tformat: --numstat \
-| gawk '{ add += $1 ; subs += $2 ; loc += $1 - $2 } END { printf "added lines: %s removed lines : %s total lines: %s\n",add,subs,loc }' -
+| gawk '{ add += $1 ; subs += $2 ; loc += $1 - $2 } END { printf "added lines: %s removed lines : %s total lines: %s\n",add,subs,loc }' - ;
 }
-alias glines=gitLinesChangedUser
-alias gcommits='git shortlog -sn'
+gcm() { git commit -m "$*"; }
 
-alias ber='bundle exec rake'
-alias be='bundle exec'
-alias bic='bundle install && bundle clean --force'
+# ruby
+ber() { bundle exec rake $*; }
+be() { bundle exec $*; }
+binc() { bundle install --no-deployment && bundle clean --force; }
+dabv() { rm -rf ../**/.bundle; rm -rf ../**/vendor; }
 
-# function instead of alias for arguments
 
-gcm() {
-  git commit -m "$*"
-}
-
-kl() {
-  kill -9 %$1
-}
+# system
+kl() { kill -9 %$1; }
 
 untilfail() {
   count=0
   while ($*); do (( count++ )); done
   echo "failed on attempt $count"
 }
+
+forprojects() {
+  for PROJ in `ls $PROJECTS`
+  do
+    pushd $PROJECTS/$PROJ
+    eval $1
+    popd
+  done
+}
+
+insert_start() { echo $1 | cat - $2 > temp_file.insert_start && mv temp_file.insert_start $2; }
+
+# Add an "alert" alias for long running commands.  Use like so:
+# sleep 10; alert
+alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
+
