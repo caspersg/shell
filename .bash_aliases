@@ -12,7 +12,7 @@ if [ -x /usr/bin/dircolors ]; then
 fi
 
 # general aliases/functions
-alias sbp='source ~/.bash_profile'
+sbp() { source ~/.bash_profile ; }
 
 e() { subl $*; }
 ebp() { e ~/.bash_profile ~/.bash_aliases ; }
