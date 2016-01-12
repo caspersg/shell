@@ -12,11 +12,11 @@ if [ -x /usr/bin/dircolors ]; then
 fi
 
 # general aliases/functions
+alias ll='ls -alFG'
 sbp() { source ~/.bash_profile ; }
 
 e() { subl $*; }
 ebp() { e ~/.bash_profile ~/.bash_aliases ; }
-ll() { ls -alF $*; }
 la() { ls -A $*; }
 l() { ls -CF $*; }
 
@@ -28,7 +28,8 @@ ga() { git add -p $*; }
 gc() { git commit $*; }
 gca() { git commit --amend; }
 gs() { git status; }
-gps() { git push; }
+gps() { git push $*; }
+gpsu() { gps -u origin HEAD; }
 gco() { git checkout $*; }
 gcop() { gco -p $*; }
 gcob() { gco -b $*; }
@@ -56,7 +57,7 @@ gcm() { git commit -m "$*"; }
 ber() { bundle exec rake $*; }
 be() { bundle exec $*; }
 binc() { bundle install --no-deployment && bundle clean --force; }
-dbv() { rm -rf .bundle vendor; }
+rbv() { rm -rf .bundle vendor; }
 
 
 # system
