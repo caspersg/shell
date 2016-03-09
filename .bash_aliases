@@ -15,7 +15,7 @@ fi
 alias ll='ls -alFG'
 sbp() { source ~/.bash_profile ; }
 
-e() { subl $*; }
+e() { atom $*; }
 ebp() { e ~/.bash_profile ~/.bash_aliases ; }
 la() { ls -A $*; }
 l() { ls -CF $*; }
@@ -46,6 +46,7 @@ gmt() { git mergetool; }
 gmm() { gss && gco master && gpl && gco - && git merge master; }
 grm() { gco master && gpl && gco - && git rebase master; }
 gpristine() { git reset --hard && git clean -dfx; }
+gui() { git update-index --assume-unchanged $*; }
 gcommits() { git shortlog -sn; }
 glines() {
   git log --author="$1" --since="$2" --pretty=tformat: --numstat \
@@ -58,14 +59,17 @@ ber() { bundle exec rake $*; }
 be() { bundle exec $*; }
 binc() { bundle install --no-deployment && bundle clean --force; }
 rbv() { rm -rf .bundle vendor; }
+tld() { tail -f log/development.log; }
 
 
 # system
-kl() { kill -9 %$1; }
+k9() { kill -9 $*; }
+kl() { k9 %$1; }
+kill_all() { ps -A | grep $* | cut -d' ' -f1 | xargs -I {} k9 {}; }
 
 untilfail() {
   count=0
-  while ($*); do (( count++ )); done
+  while (time $*); do (( count++ )); done
   echo "failed on attempt $count"
 }
 
@@ -74,17 +78,17 @@ forEachIn() {
   do
     echo "for $1/$ITEM $2"
     pushd $1/$ITEM
-    eval $2
+    eval $2 || return $?
     popd
   done
 }
 
 forprojects() {
-  for PROJ in `ls $PROJECTS`
+  for PROJ in ${PROJECT_NAMES[@]}
   do
-    echo "for $PROJECTS/$PROJ $1"
-    pushd $PROJECTS/$PROJ
-    eval $1
+    # echo "for $PROJECTS/${PROJ} $*"
+    pushd $PROJECTS/${PROJ}
+    eval $* || return $?
     popd
   done
 }
