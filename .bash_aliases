@@ -66,7 +66,7 @@ tld() { tail -f log/development.log; }
 k9() { kill -9 $*; }
 kl() { k9 %$1; }
 kill_all() { ps -A | grep $* | cut -d' ' -f1 | xargs -I {} k9 {}; }
-
+findgrep() { find . | xargs grep -s $*; }
 untilfail() {
   count=0
   while (time $*); do (( count++ )); done
@@ -98,4 +98,3 @@ insert_start() { echo $1 | cat - $2 > temp_file.insert_start && mv temp_file.ins
 # Add an "alert" alias for long running commands.  Use like so:
 # sleep 10; alert
 alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
-

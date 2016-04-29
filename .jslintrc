@@ -24,6 +24,7 @@
         "angular",
         "document",
         "\\$",
+        "$",
         "_",
         "JQuery",
         "FB",
@@ -43,7 +44,10 @@
         "createTestContext",
         "double",
         "allow",
-        "randomString"
+        "randomString",
+        "ExtensionDateUtil",
+        "CloudDataHelper",
+        "randomInteger"
     ],
     "regexp": false,
     "rhino": true,
