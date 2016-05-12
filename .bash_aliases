@@ -117,8 +117,8 @@ scheduler_console() {
 rtss() { ber test SKIP_SERVICES=true TEST=$1; }
 rt() { ber test TEST=$1; }
 rtu() { ber test WITHOUT_TORQUEBOX=true SKIP_SERVICES=true TEST=$1; }
-rtsscf() { rtss test/integration/saveawatt/conversation_flow_test.rb; }
-rtcf() { rt test/integration/saveawatt/conversation_flow_test.rb; }
+rtsscf() { ber test SKIP_SERVICES=true TEST=test/integration/saveawatt/conversation_flow_test.rb; }
+rtcf() { ber test TEST=test/integration/saveawatt/conversation_flow_test.rb; }
 rjsetup() { rm spec/javascripts/support/extensions/*.yml; ber jasmine:setup; }
 rjs() { rjsetup; JASMINE_CONFIG_PATH=$1 ber jasmine:server; }
 rjr() { ber jasmine:run; }
