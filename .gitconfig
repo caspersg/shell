@@ -1,0 +1,12 @@
+[user]
+	email = cszymiczek-graley@zendesk
+	name = Casper Szymiczek-Graley
+[core]
+	excludesfile = ~/.gitignore
+	editor = vim
+	autocrlf = input
+	whitespace = trailing-space,space-before-tab,blank-at-eol,tab-in-indent
+[rebase]
+	autoStash = true
+[pull]
+	rebase = true

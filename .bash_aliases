@@ -44,7 +44,7 @@ gl() { git log --oneline --graph --decorate --all; }
 gcp() { git cherry-pick $*; }
 gmt() { git mergetool; }
 gmm() { gss && gco master && gpl && gco - && git merge master; }
-grm() { gco master && gpl && gco - && git rebase master; }
+grm() { gco master && gpl && gco - && git rebase --autostash master }
 gpristine() { git reset --hard && git clean -dfx; }
 gui() { git update-index --assume-unchanged $*; }
 gcommits() { git shortlog -sn; }
@@ -114,16 +114,6 @@ scheduler_console() {
    DISABLE_JOB_INITIALIZER=true rails c; #ScheduledEvent.delete_all
 }
 
-rtss() { ber test SKIP_SERVICES=true TEST=$1; }
-rt() { ber test TEST=$1; }
-rtu() { ber test WITHOUT_TORQUEBOX=true SKIP_SERVICES=true TEST=$1; }
-rtsscf() { ber test SKIP_SERVICES=true TEST=test/integration/saveawatt/conversation_flow_test.rb; }
-rtcf() { ber test TEST=test/integration/saveawatt/conversation_flow_test.rb; }
-rjsetup() { rm spec/javascripts/support/extensions/*.yml; ber jasmine:setup; }
-rjs() { rjsetup; JASMINE_CONFIG_PATH=$1 ber jasmine:server; }
-rjr() { ber jasmine:run; }
-st() { NEO_KEEPALIVE=1 ./scripts/start_torquebox.sh; }
-
 cp_consumption_data() { cp ~/EIEPin/template ~/EIEPin/$1; }
 # jlls() { ~/opt/s3cmd-1.5.2/s3cmd ls s3://ap-se-2-mywave-jenkins-logs; }
 # jlsync() { ~/opt/s3cmd-1.5.2/s3cmd sync -r --no-mime-magic s3://ap-se-2-mywave-jenkins-logs/$1 ~/logs; }
@@ -152,3 +142,14 @@ cp_consumption_data() { cp ~/EIEPin/template ~/EIEPin/$1; }
 
 alias ls='ls -G'
 alias ll='ls -alFG'
+
+# zendesk
+z() { zdi $*; }
+zvr() { z vm restart; }
+zps() { zdi people -d shell; }
+zpr() { zdi people -d restart; }
+zas() { z apps status; }
+zar() { z apps restart; }
+zss() { z services status; }
+zsr() { z services restart; }
+zrestart() { zvr && zsr && zar; }
