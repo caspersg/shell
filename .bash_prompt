@@ -148,4 +148,4 @@ PS2="\[${yellow}\]→ \[${reset}\]";
 export PS2;
 
 set -o vi
-set -o emacs
+# set -o emacs

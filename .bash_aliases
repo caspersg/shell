@@ -1,3 +1,13 @@
+# bash history
+# Avoid duplicates
+export HISTCONTROL=ignoredups:erasedups
+export HISTSIZE=100000                   # big big history
+export HISTFILESIZE=100000               # big big history
+# When the shell exits, append to the history file instead of overwriting it
+shopt -s histappend
+trap 'history -r' USR1
+# After each command, append to the history file and reread it
+export PROMPT_COMMAND="${PROMPT_COMMAND:+$PROMPT_COMMAND$'\n'}history -a; history -c; history -r"
 
 # enable color support of ls and also add handy aliases
 if [ -x /usr/bin/dircolors ]; then
@@ -44,7 +54,7 @@ gl() { git log --oneline --graph --decorate --all; }
 gcp() { git cherry-pick $*; }
 gmt() { git mergetool; }
 gmm() { gss && gco master && gpl && gco - && git merge master; }
-grm() { gco master && gpl && gco - && git rebase --autostash master }
+grm() { gco master && gpl && gco - && git rebase --autostash master; }
 gpristine() { git reset --hard && git clean -dfx; }
 gui() { git update-index --assume-unchanged $*; }
 gcommits() { git shortlog -sn; }
@@ -139,6 +149,9 @@ cp_consumption_data() { cp ~/EIEPin/template ~/EIEPin/$1; }
 #
 #   forprojects ber test:all
 # }
+
+#github
+ssh_agent_github() { ssh-add; ssh -T git@github.com; }
 
 alias ls='ls -G'
 alias ll='ls -alFG'
