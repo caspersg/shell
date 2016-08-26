@@ -21,6 +21,16 @@ if [ -x /usr/bin/dircolors ]; then
     alias egrep='egrep --color=auto'
 fi
 
+#function to display commands
+function exe { echo "\$ $@" ; "$@" ; }
+
+# create shortcut
+function shortcut {
+  NAME=$1;
+  shift;
+  eval "function ${NAME} { exe $@; }";
+}
+
 # general aliases/functions
 alias ll='ls -alFG'
 sbp() { source ~/.bash_profile ; }
@@ -45,12 +55,13 @@ gcop() { gco -p $*; }
 gcob() { gco -b $*; }
 gss() { git stash; }
 gsp() { git stash pop; }
-gpl() { git pull --rebase; }
+gpl() { git pull --autostash --rebase; }
 gppl() { gco target && gpl; }
 gd() { git diff --color-words $*; }
 gdc() { git diff --color-words --cached $*; }
 gdn() { gd --name-only $*; }
 gl() { git log --oneline --graph --decorate --all; }
+glfn() { git log --graph --decorate --all --name-status; }
 gcp() { git cherry-pick $*; }
 gmt() { git mergetool; }
 gmm() { gss && gco master && gpl && gco - && git merge master; }
@@ -62,7 +73,7 @@ glines() {
   git log --author="$1" --since="$2" --pretty=tformat: --numstat \
 | gawk '{ add += $1 ; subs += $2 ; loc += $1 - $2 } END { printf "added lines: %s removed lines : %s total lines: %s\n",add,subs,loc }' - ;
 }
-gcm() { git commit -m "$*"; }
+shortcut 'gcm' 'git commit -m "$*"'
 
 # ruby
 ber() { bundle exec rake $*; }
@@ -157,12 +168,25 @@ alias ls='ls -G'
 alias ll='ls -alFG'
 
 # zendesk
-z() { zdi $*; }
-zvr() { z vm restart; }
-zps() { zdi people -d shell; }
-zpr() { zdi people -d restart; }
-zas() { z apps status; }
-zar() { z apps restart; }
-zss() { z services status; }
-zsr() { z services restart; }
-zrestart() { zvr && zsr && zar; }
+shortcut 'z' 'zdi $*'
+shortcut 'zps' 'z people -d shell'
+shortcut 'zpssh' 'z people -d --ssh run -- ssh git@github.com'
+shortcut 'zpr' 'z people -d --byebug -e DEBUG_SOURCEMAPS=true restart'
+shortcut 'zs' 'z world status'
+shortcut 'zvstart' 'z vm start'
+shortcut 'zrestart' 'z vm restart && z apps stop; z services stop; z services start; z apps start'
+shortcut 'zrc' 'z redis console'
+shortcut 'zpeople_build' '\
+  pushd ~/Code/zendesk/people &&\
+  ./script/bootstrap &&\
+  z people seed &&\
+    z people -d --ssh run "bundle" &&\
+    z people -d --ssh run "bundle exec rake db:migrate db:seed"\
+    z people -d --ssh run "ruby script/load_i18n.rb" &&\
+    z people -d --ssh run "npm install" &&\
+    z people -d --ssh run "RAILS_ENV=test bundle exec rake db:setup"'
+shortcut 'znuke' 'z nuke && z mysql seed-pull'
+shortcut 'zfresh' 'znuke && z update && z bootstrap && zpeople_build; zrestart; zs'
+shortcut 'zmigrate' 'z migrations pull && z migrations migrate'
+shortcut 'remote_debug' 'byebug --remote "dev.zd-dev.com:3033"'
+shortcut 'flc' 'flow check'
