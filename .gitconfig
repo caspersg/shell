@@ -14,6 +14,7 @@
 	default = simple
 [merge]
 	tool = p4mergetool
+	conflictstyle = diff3
 [mergetool "p4mergetool"]
 	cmd = /Applications/p4merge.app/Contents/Resources/launchp4merge $PWD/$BASE $PWD/$LOCAL $PWD/$REMOTE $PWD/$MERGED
 	trustExitCode = false

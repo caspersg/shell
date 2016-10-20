@@ -65,7 +65,8 @@ glfn() { git log --graph --decorate --all --name-status; }
 gcp() { git cherry-pick $*; }
 gmt() { git mergetool; }
 gmm() { gss && gco master && gpl && gco - && git merge master; }
-grm() { gco master && gpl && gco - && git rebase --autostash master; }
+grebase() { gco $1 && gpl && gco - && git rebase --autostash $1; }
+grm() { grebase master; }
 gpristine() { git reset --hard && git clean -dfx; }
 gui() { git update-index --assume-unchanged $*; }
 gcommits() { git shortlog -sn; }
@@ -171,7 +172,8 @@ alias ll='ls -alFG'
 shortcut 'z' 'zdi $*'
 shortcut 'zps' 'z people -d shell'
 shortcut 'zpssh' 'z people -d --ssh run -- ssh git@github.com'
-shortcut 'zpr' 'z people -d --byebug -e DEBUG_SOURCEMAPS=true restart'
+shortcut 'zprd' 'z people -d --byebug -e DEBUG_SOURCEMAPS=true restart'
+shortcut 'zpr' 'z people -d restart'
 shortcut 'zs' 'z world status'
 shortcut 'zvstart' 'z vm start'
 shortcut 'zrestart' 'z vm restart && z apps stop; z services stop; z services start; z apps start'
