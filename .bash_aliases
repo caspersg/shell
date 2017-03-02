@@ -168,3 +168,35 @@ ssh_agent_github() { ssh-add; ssh -T git@github.com; }
 
 alias ls='ls -G'
 alias ll='ls -alFG'
+
+
+# zendesk
+shortcut 'z' 'zdi $*'
+shortcut 'zps' 'z people -d shell'
+shortcut 'zpssh' 'z people -d --ssh shell'
+zpsr() { z people -d --ssh run "$*"; }
+shortcut 'zpr' 'z people -d -e DEBUG_SOURCEMAPS=true restart'
+shortcut 'zprd' 'z people -d --byebug -e DEBUG_SOURCEMAPS=true restart'
+shortcut 'zs' 'z world status'
+shortcut 'zvstart' 'z vm start'
+shortcut 'zrestart' 'z vm restart && z apps stop; z services stop; z services start; z apps start'
+shortcut 'zrestart_fix' 'z mailcatcher restart; z zendesk_elasticsearch restart; z kafka restart; z zendesk_indexer restart; z legion_router restart'
+shortcut 'zrc' 'z redis console'
+shortcut 'zpeople_build' '\
+  pushd ~/Code/zendesk/people &&\
+  ./script/bootstrap &&\
+  zpsr "bundle" &&\
+  zpsr "bundle exec rake db:migrate db:seed" &&\
+  z people seed &&\
+  zpsr "ruby script/load_i18n.rb" &&\
+  zpsr "npm install" &&\
+  zpsr "RAILS_ENV=test bundle exec rake db:setup"'
+shortcut 'znuke' 'z nuke && z mysql seed-pull'
+shortcut 'zfresh' 'znuke && z bootstrap && zpeople_build && z update && zrestart && zs'
+shortcut 'zmigrate' 'z migrations pull && z migrations migrate'
+shortcut 'remote_debug' 'byebug --remote "dev.zd-dev.com:3033"'
+shortcut 'migration_setup' 'pushd ../zendesk_database_migrations/ && git pull && zdi migrations pull && zdi migrations -d seed && popd'
+shortcut 'migration_after' 'zdi mysql reset && zrestart; pushd ../people && z people seed'
+# BEGIN DOCKER-IMAGES
+source /Users/cszymiczek-graley/projects/zendesk/docker-images/dockmaster/zdi.sh
+# END DOCKER-IMAGES
