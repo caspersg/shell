@@ -16,11 +16,11 @@
 	tool = p4mergetool
 	conflictstyle = diff3
 [mergetool "p4mergetool"]
-	cmd = /Applications/p4merge.app/Contents/Resources/launchp4merge $PWD/$BASE $PWD/$LOCAL $PWD/$REMOTE $PWD/$MERGED
+	cmd = /Applications/p4merge.app/Contents/Resources/launchp4merge $PWD/$BASE $PWD/$REMOTE $PWD/$LOCAL $PWD/$MERGED
 	trustExitCode = false
 [mergetool]
 	keepBackup = false
 [diff]
 	tool = p4mergetool
 [difftool "p4mergetool"]
-	cmd = /Applications/p4merge.app/Contents/Resources/launchp4merge $LOCAL $REMOTE
+	cmd = /Applications/p4merge.app/Contents/Resources/launchp4merge $REMOTE $LOCAL

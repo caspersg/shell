@@ -190,13 +190,14 @@ shortcut 'zpeople_build' '\
   z people seed &&\
   zpsr "ruby script/load_i18n.rb" &&\
   zpsr "npm install" &&\
-  zpsr "RAILS_ENV=test bundle exec rake db:setup"'
+  zpsr "bundle exec rake db:setup RAILS_ENV=test"'
 shortcut 'znuke' 'z nuke && z mysql seed-pull'
 shortcut 'zfresh' 'znuke && z bootstrap && zpeople_build && z update && zrestart && zs'
 shortcut 'zmigrate' 'z migrations pull && z migrations migrate'
 shortcut 'remote_debug' 'byebug --remote "dev.zd-dev.com:3033"'
 shortcut 'migration_setup' 'pushd ../zendesk_database_migrations/ && git pull && zdi migrations pull && zdi migrations -d seed && popd'
 shortcut 'migration_after' 'zdi mysql reset && zrestart; pushd ../people && z people seed'
+shortcut 'zdb_clean' 'gpl ../zendesk_database_migrations && gpl ../docker-images && zdi mysql reset && zdi migrations migrate -d && zdi people -d seed'
 # BEGIN DOCKER-IMAGES
 source /Users/cszymiczek-graley/projects/zendesk/docker-images/dockmaster/zdi.sh
 # END DOCKER-IMAGES
