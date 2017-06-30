@@ -35,7 +35,7 @@ function shortcut {
 alias ll='ls -alFG'
 sbp() { source ~/.bash_profile ; }
 
-e() { atom $*; }
+e() { $EDITOR $*; }
 ebp() { e ~/.bash_profile ~/.bash_aliases ; }
 la() { ls -A $*; }
 l() { ls -CF $*; }
@@ -48,8 +48,18 @@ ga() { git add -p $*; }
 gc() { git commit $*; }
 gca() { git commit --amend; }
 gs() { git status; }
-gps() { git push $*; }
-gpsu() { gps -u origin HEAD; }
+git_branchname() { git symbolic-ref --short HEAD; }
+gps() {
+  if [ git_branchname == 'master' ]
+  then
+    echo 'cannot push to master';
+    exit -1;
+  else
+    git push $*;
+  fi
+}
+# gpsu() { gps -u origin HEAD; }
+gpsu() { git push --set-upstream origin $(git rev-parse --abbrev-ref HEAD); }
 gco() { git checkout $*; }
 gcop() { gco -p $*; }
 gcob() { gco -b $*; }
@@ -125,7 +135,7 @@ alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo
 
 # project specific aliases
 export PROJECTS=~/projects
-export PROJECT_NAMES=(core authentications messaging events pods hosted-vendors shares platform)
+export PROJECT_NAMES=()
 
 rdc() { ber deploy:clean; }
 rd() { ber deploy; }
@@ -174,7 +184,7 @@ alias ll='ls -alFG'
 shortcut 'z' 'zdi $*'
 shortcut 'zps' 'z people -d shell'
 shortcut 'zpssh' 'z people -d --ssh shell'
-zpsr() { z people -d --ssh run "$*"; }
+shortcut 'zpsr' 'z people -d --ssh run "$*"'
 shortcut 'zpr' 'z people -d -e DEBUG_SOURCEMAPS=true restart'
 shortcut 'zprd' 'z people -d --byebug -e DEBUG_SOURCEMAPS=true restart'
 shortcut 'zs' 'z world status'
@@ -198,6 +208,19 @@ shortcut 'remote_debug' 'byebug --remote "dev.zd-dev.com:3033"'
 shortcut 'migration_setup' 'pushd ../zendesk_database_migrations/ && git pull && zdi migrations pull && zdi migrations -d seed && popd'
 shortcut 'migration_after' 'zdi mysql reset && zrestart; pushd ../people && z people seed'
 shortcut 'zdb_clean' 'gpl ../zendesk_database_migrations && gpl ../docker-images && zdi mysql reset && zdi migrations migrate -d && zdi people -d seed'
+shortcut 'resque_web_ssh' 'ssh -NL 9298:misc4.$1:9298 -v $1'
+shortcut 'resque_web_ssh_prod' 'resque_web_ssl pod6'
+shortcut 'resque_web_ssh_new_staging' 'ssh -NL 9298:miscb1.pod999.use1.zdsystest.com:9298  -v dba999'
+
+shortcut 'goro' 'go run outboundd.go --run-all'
+shortcut 'got' 'go test -v ./...'
+shortcut 'gotapid' 'go test -check.v github.com/outboundio/server/apitests -tags apitests --env dev'
+shortcut 'runnginx' 'sudo nginx -c /opt/outbound/nginx/nginx.conf'
+shortcut 'flush_mem_cache_server' 'echo flush_all > /dev/tcp/127.0.0.1/11211'
+alias zupdate_outbound='NO_MIGRATE=true zdi update'
+shortcut 'cbt-prod' 'cbt -instance=ob-bigtable'
+shortcut 'zodr' 'zdi outbound_server -d restart'
+
 # BEGIN DOCKER-IMAGES
 source /Users/cszymiczek-graley/projects/zendesk/docker-images/dockmaster/zdi.sh
 # END DOCKER-IMAGES
