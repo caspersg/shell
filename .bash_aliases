@@ -39,6 +39,7 @@ e() { $EDITOR $*; }
 ebp() { e ~/.bash_profile ~/.bash_aliases ; }
 la() { ls -A $*; }
 l() { ls -CF $*; }
+vimInstallPlugins() { vim +PlugInstal +qall; }
 
 # osx
 clip() { xclip -se c ;}
@@ -50,16 +51,17 @@ gca() { git commit --amend; }
 gs() { git status; }
 git_branchname() { git symbolic-ref --short HEAD; }
 gps() {
-  if [ git_branchname == 'master' ]
+  if [ `git_branchname` == "master" ]
   then
-    echo 'cannot push to master';
-    exit -1;
+    echo "cannot push to master";
+    return -1;
   else
     git push $*;
   fi
 }
 # gpsu() { gps -u origin HEAD; }
-gpsu() { git push --set-upstream origin $(git rev-parse --abbrev-ref HEAD); }
+gpsu() { gps --set-upstream origin $(git rev-parse --abbrev-ref HEAD); }
+gpsforce() { gps --force-with-lease; }
 gco() { git checkout $*; }
 gcop() { gco -p $*; }
 gcob() { gco -b $*; }
@@ -75,7 +77,7 @@ gl() { git log --oneline --graph --decorate --all; }
 glfn() { git log --graph --decorate --all --name-status; }
 gcp() { git cherry-pick $*; }
 gmt() { git mergetool; }
-gmm() { gss && gco master && gpl && gco - && git merge master; }
+gmm() { gss && gco master && gpl && gco - && it merge master; }
 grebase() { gco $1 && gpl && gco - && git rebase --autostash $1; }
 grm() { grebase master; }
 gpristine() { git reset --hard && git clean -dfx; }
@@ -220,6 +222,10 @@ shortcut 'flush_mem_cache_server' 'echo flush_all > /dev/tcp/127.0.0.1/11211'
 alias zupdate_outbound='NO_MIGRATE=true zdi update'
 shortcut 'cbt-prod' 'cbt -instance=ob-bigtable'
 shortcut 'zodr' 'zdi outbound_server -d restart'
+shortcut 'zrdlodr' 'zdi outbound_server -ld --remote-debug restart'
+shortcut 'zrdodr' 'zdi outbound_server -d --remote-debug restart'
+shortcut 'zods' 'zdi outbound_server -d shell'
+shortcut 'ztdr' 'zdi outbound_client -d restart'
 
 # BEGIN DOCKER-IMAGES
 source /Users/cszymiczek-graley/projects/zendesk/docker-images/dockmaster/zdi.sh
