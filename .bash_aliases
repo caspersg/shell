@@ -77,7 +77,7 @@ gl() { git log --oneline --graph --decorate --all; }
 glfn() { git log --graph --decorate --all --name-status; }
 gcp() { git cherry-pick $*; }
 gmt() { git mergetool; }
-gmm() { gss && gco master && gpl && gco - && it merge master; }
+gmm() { gss && gco master && gpl && gco - && git merge master; }
 grebase() { gco $1 && gpl && gco - && git rebase --autostash $1; }
 grm() { grebase master; }
 gpristine() { git reset --hard && git clean -dfx; }
@@ -226,6 +226,8 @@ shortcut 'zrdlodr' 'zdi outbound_server -ld --remote-debug restart'
 shortcut 'zrdodr' 'zdi outbound_server -d --remote-debug restart'
 shortcut 'zods' 'zdi outbound_server -d shell'
 shortcut 'ztdr' 'zdi outbound_client -d restart'
+shortcut 'cdos' 'cd ~/projects/go/src/github.com/outboundio/server/'
+shortcut 'geds' 'gcloud beta emulators datastore start --project=outbound-dev-170121'
 
 # BEGIN DOCKER-IMAGES
 source /Users/cszymiczek-graley/projects/zendesk/docker-images/dockmaster/zdi.sh
