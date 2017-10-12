@@ -181,6 +181,7 @@ ssh_agent_github() { ssh-add; ssh -T git@github.com; }
 alias ls='ls -G'
 alias ll='ls -alFG'
 
+shortcut 'ct' 'cut -d " " -f$*'
 
 # zendesk
 shortcut 'z' 'zdi $*'
@@ -216,18 +217,26 @@ shortcut 'resque_web_ssh_new_staging' 'ssh -NL 9298:miscb1.pod999.use1.zdsystest
 
 shortcut 'goro' 'go run outboundd.go --run-all'
 shortcut 'got' 'go test -v ./...'
-shortcut 'gotapid' 'go test -check.v github.com/outboundio/server/apitests -tags apitests --env dev'
+shortcut 'gotapid' 'go test -check.v github.com/zendesk/server/apitests -tags apitests --env dev'
 shortcut 'runnginx' 'sudo nginx -c /opt/outbound/nginx/nginx.conf'
 shortcut 'flush_mem_cache_server' 'echo flush_all > /dev/tcp/127.0.0.1/11211'
 alias zupdate_outbound='NO_MIGRATE=true zdi update'
 shortcut 'cbt-prod' 'cbt -instance=ob-bigtable'
-shortcut 'zodr' 'zdi outbound_server -d restart'
+shortcut 'zodr' 'zdi outbound_server -d restart --watch'
+shortcut 'zodk' 'zdi outbound_server stop'
 shortcut 'zrdlodr' 'zdi outbound_server -ld --remote-debug restart'
 shortcut 'zrdodr' 'zdi outbound_server -d --remote-debug restart'
 shortcut 'zods' 'zdi outbound_server -d shell'
 shortcut 'ztdr' 'zdi outbound_client -d restart'
-shortcut 'cdos' 'cd ~/projects/go/src/github.com/outboundio/server/'
+shortcut 'cdos' 'cd ~/projects/go/src/github.com/zendesk/outbound/'
 shortcut 'geds' 'gcloud beta emulators datastore start --project=outbound-dev-170121'
+shortcut 'obctl_staging' 'obctl -p gcp -e us1_staging'
+shortcut 'obctl_prod' 'obctl -p gcp -e us1_prod'
+
+shortcut 'docker_cleaup_volumes' 'docker volume rm $(docker volume ls -qf dangling=true)'
+shortcut 'docker_remove_unused_images' 'docker rmi $(docker images | grep "^<none>" | awk "{print $3}")'
+shortcut 'statsd_logs' 'docker exec -it outbound_server /bin/bash -c "go get -u github.com/catkins/statsd-logger/cmd/statsd-logger && statsd-logger"'
+
 
 # BEGIN DOCKER-IMAGES
 source /Users/cszymiczek-graley/projects/zendesk/docker-images/dockmaster/zdi.sh

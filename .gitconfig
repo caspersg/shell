@@ -22,5 +22,6 @@
 	keepBackup = false
 [diff]
 	tool = p4mergetool
+	renameLimit = 999999
 [difftool "p4mergetool"]
 	cmd = /Applications/p4merge.app/Contents/Resources/launchp4merge $REMOTE $LOCAL
