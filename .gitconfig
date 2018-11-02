@@ -1,5 +1,5 @@
 [user]
-	email = cszymiczek-graley@zendesk
+	email = cszymiczek-graley@zendesk.com
 	name = Casper Szymiczek-Graley
 [core]
 	excludesfile = ~/.gitignore

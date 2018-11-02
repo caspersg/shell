@@ -43,6 +43,12 @@ vimInstallPlugins() { vim +PlugInstal +qall; }
 
 # osx
 clip() { xclip -se c ;}
+alias cat='bat'
+#alias find='fd'
+alias preview="fzf --preview 'bat --color \"always\" {}'"
+# add support for ctrl+o to open selected file in VS Code
+export FZF_DEFAULT_OPTS="--bind='ctrl-o:execute(code {})+abort'"
+
 
 # git
 ga() { git add -p $*; }
@@ -88,6 +94,7 @@ glines() {
 | gawk '{ add += $1 ; subs += $2 ; loc += $1 - $2 } END { printf "added lines: %s removed lines : %s total lines: %s\n",add,subs,loc }' - ;
 }
 shortcut 'gcm' 'git commit -m "$*"'
+shortcut 'gclean' 'git clean -i'
 
 # ruby
 shortcut 'be' 'bundle exec $*'
@@ -132,7 +139,7 @@ insert_start() { echo $1 | cat - $2 > temp_file.insert_start && mv temp_file.ins
 
 # Add an "alert" alias for long running commands.  Use like so:
 # sleep 10; alert
-alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
+# alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
 
 
 # project specific aliases
@@ -185,32 +192,28 @@ shortcut 'ct' 'cut -d " " -f$*'
 
 # zendesk
 shortcut 'z' 'zdi $*'
-shortcut 'zps' 'z people -d shell'
-shortcut 'zpssh' 'z people -d --ssh shell'
-shortcut 'zpsr' 'z people -d --ssh run "$*"'
-shortcut 'zpr' 'z people -d -e DEBUG_SOURCEMAPS=true restart'
-shortcut 'zprd' 'z people -d --byebug -e DEBUG_SOURCEMAPS=true restart'
 shortcut 'zs' 'z world status'
 shortcut 'zvstart' 'z vm start'
-shortcut 'zrestart' 'z vm restart && z apps stop; z services stop; z services start; z apps start'
-shortcut 'zrestart_fix' 'z mailcatcher restart; z zendesk_elasticsearch restart; z kafka restart; z zendesk_indexer restart; z legion_router restart'
-shortcut 'zrc' 'z redis console'
-shortcut 'zpeople_build' '\
-  pushd ~/Code/zendesk/people &&\
-  ./script/bootstrap &&\
-  zpsr "bundle" &&\
-  zpsr "bundle exec rake db:migrate db:seed" &&\
-  z people seed &&\
-  zpsr "ruby script/load_i18n.rb" &&\
-  zpsr "npm install" &&\
-  zpsr "bundle exec rake db:setup RAILS_ENV=test"'
-shortcut 'znuke' 'z nuke && z mysql seed-pull'
-shortcut 'zfresh' 'znuke && z bootstrap && zpeople_build && z update && zrestart && zs'
+shortcut 'zrestart' 'z vm start; z vm restart && z apps stop; z services stop; z services start; z apps start'
+shortcut 'zclean' 'pushd ~/projects/zendesk/docker-images && gpl && \
+	docker_cleaup_volumes && docker_remove_unused_images && \
+	echo "**** zdi vm stop" zdi vm stop ; \
+	echo "**** vagrant destroy -f" && yes | vagrant destroy -f ; \
+	echo "**** rm -rf ~/.vagrant.d" && rm -rf ~/.vagrant.d && \
+	echo "**** rm -rf ~/VirtualBox\ VMs/" && rm -rf ~/VirtualBox\ VMs/ && \
+	echo "**** brew cask uninstall virtualbox vagrant" && brew cask uninstall virtualbox vagrant '
+shortcut 'zbuild' 'pushd ~/projects/zendesk/docker-images && gpl && \
+	echo "**** brew update && brew upgrade" && brew update && brew upgrade && \
+	echo "**** brew cask upgrade " && brew cask upgrade && \
+	echo "**** ./bin/onboard" && ./bin/onboard && \
+	echo "**** zdi outbound_server seed" && z outbound_server seed && \
+	echo "**** zdi update" && z update && zs'
+shortcut 'zfresh' 'zclean && zbuild'
+
+# shortcut 'zfresh' 'znuke && z cleanup && z mysql reset && z bootstrap && z outbound_server seed && z update && zrestart && zs'
 shortcut 'zmigrate' 'z migrations pull && z migrations migrate'
 shortcut 'remote_debug' 'byebug --remote "dev.zd-dev.com:3033"'
 shortcut 'migration_setup' 'pushd ../zendesk_database_migrations/ && git pull && zdi migrations pull && zdi migrations -d seed && popd'
-shortcut 'migration_after' 'zdi mysql reset && zrestart; pushd ../people && z people seed'
-shortcut 'zdb_clean' 'gpl ../zendesk_database_migrations && gpl ../docker-images && zdi mysql reset && zdi migrations migrate -d && zdi people -d seed'
 shortcut 'resque_web_ssh' 'ssh -NL 9298:misc4.$1:9298 -v $1'
 shortcut 'resque_web_ssh_prod' 'resque_web_ssl pod6'
 shortcut 'resque_web_ssh_new_staging' 'ssh -NL 9298:miscb1.pod999.use1.zdsystest.com:9298  -v dba999'
@@ -230,13 +233,27 @@ shortcut 'zods' 'zdi outbound_server -d shell'
 shortcut 'ztdr' 'zdi outbound_client -d restart'
 shortcut 'cdos' 'cd ~/projects/go/src/github.com/zendesk/outbound/'
 shortcut 'geds' 'gcloud beta emulators datastore start --project=outbound-dev-170121'
-shortcut 'obctl_staging' 'obctl -p gcp -e us1_staging'
-shortcut 'obctl_prod' 'obctl -p gcp -e us1_prod'
+shortcut 'obctl_staging' 'obctl -e us1_staging'
+shortcut 'obctl_prod' 'obctl -e us1_prod'
 
 shortcut 'docker_cleaup_volumes' 'docker volume rm $(docker volume ls -qf dangling=true)'
 shortcut 'docker_remove_unused_images' 'docker rmi $(docker images | grep "^<none>" | awk "{print $3}")'
 shortcut 'statsd_logs' 'docker exec -it outbound_server /bin/bash -c "go get -u github.com/catkins/statsd-logger/cmd/statsd-logger && statsd-logger"'
+shortcut 'docker_shell' 'docker exec -it outbound_server /bin/bash'
 
+shortcut 'go_tool_trace' 'go tool trace -http=":3333"'
+
+shortcut 'update_ack_deadline' 'gcloud alpha pubsub subscriptions update projects/outbound-dev-170121/subscriptions/$1 --ack-deadline=$2'
+
+shortcut 'shutdown_outboundd_touch_binary' 'docker exec -it outbound_server bash -c "touch /go/bin/outbound"'
+shortcut 'docker_login_container_registry' 'docker-credential-gcr configure-docker; gcloud auth print-access-token | docker login -u oauth2accesstoken --password-stdin https://gcr.io ; gcloud docker -- pull gcr.io/docker-images-180022/base/alpine:3.6'
+
+
+# go
+shortcut 'go_imports' 'go list -f "{{ join .Imports \"\n\" }}" $1 | grep github.com/zendesk/outbound | grep -v vendor'
+shortcut 'go_deps' 'go list -f "{{ join .Deps  \"\n\"}}" $1 | grep github.com/zendesk/outbound | grep -v vendor'
+go_graph_deps() { godepgraph -s -p cloud.google.com,golang.org,google.golang.org $1; }
+shortcut 'dot_png' 'dot -Tpng -o$1'
 
 # BEGIN DOCKER-IMAGES
 source /Users/cszymiczek-graley/projects/zendesk/docker-images/dockmaster/zdi.sh
