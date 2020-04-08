@@ -116,6 +116,15 @@ untilfail() {
   while (time $*); do (( count++ )); done
   echo "failed on attempt $count"
 }
+untilsuccess() {
+  count=0
+  until $*
+  do
+    ((count++))
+    echo "Try again $count"
+  done
+  echo "success on attempt $count"
+}
 
 forEachIn() {
   for ITEM in `ls $1`
@@ -211,7 +220,7 @@ shortcut 'z' 'zdi $*'
 shortcut 'zs' 'z world status'
 shortcut 'zvstart' 'z vm start'
 # shortcut 'zrestart' 'z vm start; z vm restart && z apps stop; z services stop; z services start; z apps start'
-shortcut 'zrestart' 'zdi world restart'
+shortcut 'zrestart' 'zdi vm restart && zdi world restart'
 shortcut 'zbaserestart' 'zdi consul restart && zdi dnsmasq restart && zdi nginx restart'
 shortcut 'zclean' 'pushd ~/projects/zendesk/zdi && gpl && \
 	docker_cleaup_volumes && docker_remove_unused_images && \
