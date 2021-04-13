@@ -58,6 +58,9 @@ prompt_git() {
     if [[ "${branchName}" == "master" ]]; then
       colour="${red} "
       branchName="\033[5mmaster\033[0m"
+    elif [[ "${branchName}" == "main" ]]; then
+      colour="${red} "
+      branchName="\033[5mmain\033[0m"
     fi;
 
     [ -n "${s}" ] && s=" ${s}";

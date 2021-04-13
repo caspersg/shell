@@ -1,4 +1,5 @@
 #!/bin/sh
+# make sure target dir already exists
 
 if [[ $# -ne 2 ]] ; then
   echo "Usage: git-split.sh original copy"

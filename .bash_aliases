@@ -57,9 +57,9 @@ gca() { git commit --amend; }
 gs() { git status; }
 git_branchname() { git symbolic-ref --short HEAD; }
 gps() {
-  if [ `git_branchname` == "master" ]
+  if [ `git_branchname` == "master" ] || [ `git_branchname` == "main" ]
   then
-    echo "cannot push to master";
+    echo "cannot push to master or main";
     return -1;
   else
     git push $*;
@@ -83,10 +83,10 @@ gl() { git log --oneline --graph --decorate --all; }
 glfn() { git log --graph --decorate --all --name-status; }
 gcp() { git cherry-pick $*; }
 gmt() { git mergetool; }
-gmm() { gss && gco master && gpl && gco - && git merge master; }
+gmm() { gss && gco main && gpl && gco - && git merge main; }
 shortcut 'grebase' 'gco $1 && gpl && gco - && git rebase --autostash $*'
 grc() { git rebase --continue; }
-grm() { grebase master; }
+grm() { grebase main; }
 gpristine() { git reset --hard && git clean -dfx; }
 gui() { git update-index --assume-unchanged $*; }
 gcommits() { git shortlog -sn; }
@@ -95,6 +95,7 @@ glines() {
 | gawk '{ add += $1 ; subs += $2 ; loc += $1 - $2 } END { printf "added lines: %s removed lines : %s total lines: %s\n",add,subs,loc }' - ;
 }
 shortcut 'gcm' 'git commit -m "$*"'
+shortcut 'gcnm' 'git commit -n -m "$*"'
 shortcut 'gclean' 'git clean -i'
 shortcut 'git_recent_files' 'git whatchanged --diff-filter=A $*'
 
@@ -293,6 +294,7 @@ shortcut 'dot_png' 'dot -Tpng -o$1'
 # python 
 # sandbox
 eval "$(pipenv --completion)"
+eval "$(pyenv init -)"
 
 export DYLD_LIBRARY_PATH=/usr/local/Cellar/mysql/8.0.17_1/lib/
 
@@ -305,8 +307,10 @@ shortcut 'zsou' 'zdi sandbox_orchestrator update && psd'
 shortcut 'sointegrationtest' 'pushd integration_tests && docker-compose build && docker-compose run webapp-integration-test && popd'
 shortcut 'vagrant_file_change' 'pushd ~/projects/zendesk/zdi && vagrant plugin install vagrant-notify-forwarder && vagrant reload && popd'
 shortcut 'soreset' 'zdi sandbox_orchestrator reset_db && zdi redis restart'
-shortcut 'pyclean' 'find . -name '*.pyc' -delete && rm -rf ~/Library/Caches/black/* && pipenv --rm'
+shortcut 'pyclean' 'find . -name '*.pyc' -delete && rm -rf ~/Library/Caches/black/* && pipenv --rm && psd'
+shortcut 'pcsd' 'pyclean && psd'
 shortcut 'pyblackclean' 'rm -rf ~/Library/Caches/black/*'
+shortcut 'g' './gradlew $*'
 
 export PIPENV_VERBOSITY=-1
 export PYTHONDONTWRITEBYTECODE=1
