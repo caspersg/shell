@@ -51,13 +51,12 @@ export FZF_DEFAULT_OPTS="--bind='ctrl-o:execute(code {})+abort'"
 
 
 # git
-ga() { git add -p $*; }
-gc() { git commit $*; }
-gca() { git commit --amend; }
-gs() { git status; }
+shortcut 'ga' 'git add -p $*'
+shortcut 'gc' 'git commit $*'
+shortcut 'gs' 'git status'
 git_branchname() { git symbolic-ref --short HEAD; }
-gps() {
-  if [ `git_branchname` == "master" ] || [ `git_branchname` == "main" ]
+git_push() {
+  if [[ `git_branchname` == "master" ]] || [[ `git_branchname` == "main" ]]
   then
     echo "cannot push to master or main";
     return -1;
@@ -65,38 +64,41 @@ gps() {
     git push $*;
   fi
 }
-# gpsu() { gps -u origin HEAD; }
-gpsu() { gps --set-upstream origin $(git rev-parse --abbrev-ref HEAD); }
-gpsforce() { gps --force-with-lease; }
-gco() { git checkout $*; }
-gcop() { gco -p $*; }
-gcob() { gco -b $*; }
-gss() { git stash; }
-gsp() { git stash pop; }
-gsk() { git stash --keep-index; }
-gpl() { git pull --autostash --rebase; }
-gppl() { gco target && gpl; }
-gd() { git diff --color-words $*; }
-gdc() { git diff --color-words --cached $*; }
-gdn() { gd --name-only $*; }
-gl() { git log --oneline --graph --decorate --all; }
-glfn() { git log --graph --decorate --all --name-status; }
-gcp() { git cherry-pick $*; }
-gmt() { git mergetool; }
-gmm() { gss && gco main && gpl && gco - && git merge main; }
+shortcut 'gps' 'git_push $*'
+shortcut 'gpsu' 'gps --set-upstream origin $(git rev-parse --abbrev-ref HEAD)'
+shortcut 'gpsforce' 'gps --force-with-lease'
+shortcut 'gco' 'git checkout $*'
+shortcut 'gcop' 'gco -p $*'
+shortcut 'gcob' 'gco -b $*'
+shortcut 'gss' 'git stash'
+shortcut 'gsp' 'git stash pop'
+shortcut 'gsk' 'git stash --keep-index'
+shortcut 'gpl' 'git pull --autostash --rebase'
+shortcut 'gppl' 'gco target && gpl'
+shortcut 'gd' 'git diff --color-words $*'
+shortcut 'gdc' 'git diff --color-words --cached $*'
+shortcut 'gdn' 'gd --name-only $*'
+shortcut 'gl' 'git log --oneline --graph --decorate --all'
+shortcut 'glfn' 'git log --graph --decorate --all --name-status'
+shortcut 'gcp' 'git cherry-pick $*'
+shortcut 'gmt' 'git mergetool'
+shortcut 'gmm' 'gss && gco main && gpl && gco - && git merge main'
 shortcut 'grebase' 'gco $1 && gpl && gco - && git rebase --autostash $*'
-grc() { git rebase --continue; }
-grm() { grebase main; }
-gpristine() { git reset --hard && git clean -dfx; }
-gui() { git update-index --assume-unchanged $*; }
-gcommits() { git shortlog -sn; }
+shortcut 'grbc' 'git rebase --continue'
+shortcut 'grbm' 'grebase main'
+shortcut 'gpristine' 'git reset --hard && git clean -dfx'
+shortcut 'gui' 'git update-index --assume-unchanged $*'
+shortcut 'gcommits' 'git shortlog -sn'
 glines() {
   git log --author="$1" --since="$2" --pretty=tformat: --numstat \
 | gawk '{ add += $1 ; subs += $2 ; loc += $1 - $2 } END { printf "added lines: %s removed lines : %s total lines: %s\n",add,subs,loc }' - ;
 }
+shortcut 'gca' 'git commit --amend $*'
+shortcut 'gcna' 'git commit -n --amend $*'
 shortcut 'gcm' 'git commit -m "$*"'
 shortcut 'gcnm' 'git commit -n -m "$*"'
 shortcut 'gclean' 'git clean -i'
+shortcut 'gresetorigin' 'git reset --hard origin/`git branch --show-current`'
 shortcut 'git_recent_files' 'git whatchanged --diff-filter=A $*'
 
 # ruby
@@ -222,6 +224,7 @@ shortcut 'zs' 'z world status'
 shortcut 'zvstart' 'z vm start'
 # shortcut 'zrestart' 'z vm start; z vm restart && z apps stop; z services stop; z services start; z apps start'
 shortcut 'zrestart' 'zdi vm restart && zdi world restart'
+shortcut 'zwr' 'zdi world restart'
 shortcut 'zbaserestart' 'zdi consul restart && zdi dnsmasq restart && zdi nginx restart'
 shortcut 'zclean' 'pushd ~/projects/zendesk/zdi && gpl && \
 	docker_cleaup_volumes && docker_remove_unused_images && \
@@ -291,10 +294,13 @@ go_graph_deps() { godepgraph -s -p cloud.google.com,golang.org,google.golang.org
 shortcut 'dot_png' 'dot -Tpng -o$1'
 
 
-# python 
+# python
 # sandbox
 eval "$(pipenv --completion)"
-eval "$(pyenv init -)"
+# no longer sufficient eval "$(pyenv init -)"
+export PYENV_ROOT="$HOME/.pyenv"
+export PATH="$PYENV_ROOT/bin:$PATH"
+eval "$(pyenv init --path)"
 
 export DYLD_LIBRARY_PATH=/usr/local/Cellar/mysql/8.0.17_1/lib/
 
@@ -310,7 +316,11 @@ shortcut 'soreset' 'zdi sandbox_orchestrator reset_db && zdi redis restart'
 shortcut 'pyclean' 'find . -name '*.pyc' -delete && rm -rf ~/Library/Caches/black/* && pipenv --rm && psd'
 shortcut 'pcsd' 'pyclean && psd'
 shortcut 'pyblackclean' 'rm -rf ~/Library/Caches/black/*'
-shortcut 'g' './gradlew $*'
+
+# Java shortcuts
+shortcut 'gr' './gradlew $*'
+shortcut 'grc' './gradlew check -i -t'
+shortcut 'grr' './gradlew run -t'
 
 export PIPENV_VERBOSITY=-1
 export PYTHONDONTWRITEBYTECODE=1
@@ -320,6 +330,7 @@ export PYTHONDONTWRITEBYTECODE=1
 function dfm {
   unset DOCKER_FOR_MAC_ENABLED
   unset DOCKER_HOST_IP
+  export DOCKER_FOR_MAC_ENABLED=true
   export DOCKER_HOST_PORT=2375
   export DOCKER_HOST=unix:///var/run/docker.sock
 }
@@ -329,3 +340,4 @@ function dfz {
   export DOCKER_HOST_PORT=2375
   export DOCKER_HOST=tcp://192.168.42.45:2375
 }
+dfm
