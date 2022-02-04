@@ -79,3 +79,5 @@
 NEWLINE=$'\n'
 # philips PROMPT='%{$fg[$NCOLOR]%}%B%n%b%{$reset_color%}:%{$fg[blue]%}%B%c/%b%{$reset_color%} $(git_prompt_info)%(!.#.$)'
 PROMPT='%{$fg[blue]%}%B%c/%b%{$reset_color%} $(git_prompt_info)${NEWLINE}%(!.#.$) '
+
+VI_MODE_SET_CURSOR=true
