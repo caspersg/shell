@@ -3,7 +3,7 @@
 	name = Casper Szymiczek-Graley
 [core]
 	excludesfile = ~/.gitignore
-	editor = vim
+	editor = nvim
 	autocrlf = input
 	whitespace = trailing-space,space-before-tab,blank-at-eol,tab-in-indent
 [rebase]

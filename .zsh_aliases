@@ -21,14 +21,12 @@ if [ -x /usr/bin/dircolors ]; then
     alias egrep='egrep --color=auto'
 fi
 
-#function to display commands
-function exe { echo "\$ $@" ; "$@" ; }
-
 # create shortcut
 function shortcut() {
   NAME=$1;
   shift;
-  eval "function ${NAME} { exe $@; }";
+  #function to display commands then execute them
+  eval "function ${NAME} { echo "\$ $*" ; "$*" ; }";
 }
 
 # general aliases/functions
