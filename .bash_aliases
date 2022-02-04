@@ -186,20 +186,22 @@ cp_consumption_data() { cp ~/EIEPin/template ~/EIEPin/$1; }
 #   # platform-java-ruby
 #   ~/opt/s3cmd-1.5.2/s3cmd get -r --no-mime-magic s3://ap-se-2-mywave-jenkins-logs/$1 ~/logs
 # }
-export JAVA_8_HOME=$(/usr/libexec/java_home -v1.8)
-export JAVA_9_HOME=$(/usr/libexec/java_home -v9)
-export JAVA_10_HOME=$(/usr/libexec/java_home -v10)
-export JAVA_11_HOME=$(/usr/libexec/java_home -v11)
-export JAVA_12_HOME=$(/usr/libexec/java_home -v12)
+#export JAVA_8_HOME=$(/usr/libexec/java_home -v1.8)
+#export JAVA_9_HOME=$(/usr/libexec/java_home -v9)
+#export JAVA_10_HOME=$(/usr/libexec/java_home -v10)
+#export JAVA_11_HOME=$(/usr/libexec/java_home -v11)
+#export JAVA_12_HOME=$(/usr/libexec/java_home -v12)
+#export JAVA_17_HOME=$(/usr/libexec/java_home -v17)
 
-alias java8='export JAVA_HOME=$JAVA_8_HOME'
-alias java9='export JAVA_HOME=$JAVA_9_HOME'
-alias java10='export JAVA_HOME=$JAVA_10_HOME'
-alias java11='export JAVA_HOME=$JAVA_11_HOME'
-alias java12='export JAVA_HOME=$JAVA_12_HOME'
+#alias java8='export JAVA_HOME=$JAVA_8_HOME'
+#alias java9='export JAVA_HOME=$JAVA_9_HOME'
+#alias java10='export JAVA_HOME=$JAVA_10_HOME'
+#alias java11='export JAVA_HOME=$JAVA_11_HOME'
+#alias java12='export JAVA_HOME=$JAVA_12_HOME'
+#alias java17='export JAVA_HOME=$JAVA_17_HOME'
 
 # default to Java 12
-java12
+#java17
 
 # rta() {
 #   forprojects gs &&
@@ -296,7 +298,7 @@ shortcut 'dot_png' 'dot -Tpng -o$1'
 
 # python
 # sandbox
-eval "$(pipenv --completion)"
+#eval "$(pipenv --completion)"
 # no longer sufficient eval "$(pyenv init -)"
 export PYENV_ROOT="$HOME/.pyenv"
 export PATH="$PYENV_ROOT/bin:$PATH"
@@ -305,6 +307,7 @@ eval "$(pyenv init --path)"
 export DYLD_LIBRARY_PATH=/usr/local/Cellar/mysql/8.0.17_1/lib/
 
 shortcut 'cdso' 'cd ~/projects/zendesk/sandbox_orchestrator'
+shortcut 'cdcch' 'cd ~/projects/zendesk/customer-config-history'
 shortcut 'zsodr' 'zdi sandbox_orchestrator -d restart'
 shortcut 'zwsodr' 'zdi sandbox_orchestrator_worker -d restart'
 shortcut 'prtest' 'pipenv run py.test -vv $* --cov-report xml:cov.xml --cov'
