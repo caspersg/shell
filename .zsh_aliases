@@ -49,6 +49,7 @@ export FZF_DEFAULT_OPTS="--bind='ctrl-o:execute(code {})+abort'"
 
 
 # git
+alias g='git'
 shortcut 'ga' 'git add -p $*'
 shortcut 'gc' 'git commit $*'
 shortcut 'gs' 'git status'
