@@ -50,58 +50,58 @@ export FZF_DEFAULT_OPTS="--bind='ctrl-o:execute(code {})+abort'"
 
 # git
 alias g='git'
-shortcut 'ga' 'git add -p $*'
-shortcut 'gc' 'git commit $*'
-shortcut 'gs' 'git status'
-function git_branchname() { git symbolic-ref --short HEAD; }
-function git_push() {
-  if [[ `git_branchname` == "master" ]] || [[ `git_branchname` == "main" ]]
-  then
-    echo "cannot push to master or main";
-    return -1;
-  else
-    git push $*;
-  fi
-}
-shortcut 'gps' 'git_push $*'
-shortcut 'gpsu' 'gps --set-upstream origin $(git rev-parse --abbrev-ref HEAD)'
-shortcut 'gpsforce' 'gps --force-with-lease'
-shortcut 'gco' 'git checkout $*'
-shortcut 'gcop' 'gco -p $*'
-shortcut 'gcob' 'gco -b $*'
-shortcut 'gss' 'git stash'
-shortcut 'gsp' 'git stash pop'
-shortcut 'gsk' 'git stash --keep-index'
-shortcut 'gpl' 'git pull --autostash --rebase'
-shortcut 'gppl' 'gco target && gpl'
-shortcut 'gd' 'git diff --color-words $*'
-shortcut 'gdc' 'git diff --color-words --cached $*'
-shortcut 'gdn' 'gd --name-only $*'
-shortcut 'gl' 'git log --oneline --graph --decorate --all'
-shortcut 'glfn' 'git log --graph --decorate --all --name-status'
-shortcut 'gcp' 'git cherry-pick $*'
-shortcut 'gmt' 'git mergetool'
-shortcut 'gmm' 'gss && gco main && gpl && gco - && git merge main'
-shortcut 'grebase' 'gco $1 && gpl && gco - && git rebase --autostash $*'
-shortcut 'grbc' 'git rebase --continue'
-shortcut 'grbm' 'grebase main'
-shortcut 'gpristine' 'git reset --hard && git clean -dfx'
-shortcut 'gui' 'git update-index --assume-unchanged $*'
-shortcut 'gcommits' 'git shortlog -sn'
-glines() {
-  git log --author="$1" --since="$2" --pretty=tformat: --numstat \
-| gawk '{ add += $1 ; subs += $2 ; loc += $1 - $2 } END { printf "added lines: %s removed lines : %s total lines: %s\n",add,subs,loc }' - ;
-}
-shortcut 'gca' 'git commit --amend $*'
-shortcut 'gcna' 'git commit -n --amend $*'
-# shortcut 'gcm' 'git commit -m "$*"'
-function gcm() {
-  git commit -m "$*"
-}
-shortcut 'gcnm' 'git commit -n -m "$*"'
-shortcut 'gclean' 'git clean -i'
-shortcut 'gresetorigin' 'git reset --hard origin/`git branch --show-current`'
-shortcut 'git_recent_files' 'git whatchanged --diff-filter=A $*'
+# shortcut 'ga' 'git add -p $*'
+# shortcut 'gc' 'git commit $*'
+# shortcut 'gs' 'git status'
+# function git_branchname() { git symbolic-ref --short HEAD; }
+# function git_push() {
+#   if [[ `git_branchname` == "master" ]] || [[ `git_branchname` == "main" ]]
+#   then
+#     echo "cannot push to master or main";
+#     return -1;
+#   else
+#     git push $*;
+#   fi
+# }
+# shortcut 'gps' 'git_push $*'
+# shortcut 'gpsu' 'gps --set-upstream origin $(git rev-parse --abbrev-ref HEAD)'
+# shortcut 'gpsforce' 'gps --force-with-lease'
+# shortcut 'gco' 'git checkout $*'
+# shortcut 'gcop' 'gco -p $*'
+# shortcut 'gcob' 'gco -b $*'
+# shortcut 'gss' 'git stash'
+# shortcut 'gsp' 'git stash pop'
+# shortcut 'gsk' 'git stash --keep-index'
+# shortcut 'gpl' 'git pull --autostash --rebase'
+# shortcut 'gppl' 'gco target && gpl'
+# shortcut 'gd' 'git diff --color-words $*'
+# shortcut 'gdc' 'git diff --color-words --cached $*'
+# shortcut 'gdn' 'gd --name-only $*'
+# shortcut 'gl' 'git log --oneline --graph --decorate --all'
+# shortcut 'glfn' 'git log --graph --decorate --all --name-status'
+# shortcut 'gcp' 'git cherry-pick $*'
+# shortcut 'gmt' 'git mergetool'
+# shortcut 'gmm' 'gss && gco main && gpl && gco - && git merge main'
+# shortcut 'grebase' 'gco $1 && gpl && gco - && git rebase --autostash $*'
+# shortcut 'grbc' 'git rebase --continue'
+# shortcut 'grbm' 'grebase main'
+# shortcut 'gpristine' 'git reset --hard && git clean -dfx'
+# shortcut 'gui' 'git update-index --assume-unchanged $*'
+# shortcut 'gcommits' 'git shortlog -sn'
+# glines() {
+#   git log --author="$1" --since="$2" --pretty=tformat: --numstat \
+# | gawk '{ add += $1 ; subs += $2 ; loc += $1 - $2 } END { printf "added lines: %s removed lines : %s total lines: %s\n",add,subs,loc }' - ;
+# }
+# shortcut 'gca' 'git commit --amend $*'
+# shortcut 'gcna' 'git commit -n --amend $*'
+# # shortcut 'gcm' 'git commit -m "$*"'
+# function gcm() {
+#   git commit -m "$*"
+# }
+# shortcut 'gcnm' 'git commit -n -m "$*"'
+# shortcut 'gclean' 'git clean -i'
+# shortcut 'gresetorigin' 'git reset --hard origin/`git branch --show-current`'
+# shortcut 'git_recent_files' 'git whatchanged --diff-filter=A $*'
 
 # ruby
 shortcut 'be' 'bundle exec $*'
