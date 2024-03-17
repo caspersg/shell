@@ -159,7 +159,7 @@ function insert_start() { echo $1 | cat - $2 > temp_file.insert_start && mv temp
 
 
 # project specific aliases
-export PROJECTS=~/projects
+export PROJECTS=~/Code
 export PROJECT_NAMES=()
 
 function rdc() { ber deploy:clean; }
@@ -230,14 +230,14 @@ shortcut 'zvstart' 'z vm start'
 shortcut 'zrestart' 'zdi vm restart && zdi world restart'
 shortcut 'zwr' 'zdi world restart'
 shortcut 'zbaserestart' 'zdi consul restart && zdi dnsmasq restart && zdi nginx restart'
-shortcut 'zclean' 'pushd ~/projects/zendesk/zdi && gpl && \
+shortcut 'zclean' 'pushd ~/Code/zendesk/zdi && gpl && \
 	docker_cleaup_volumes && docker_remove_unused_images && \
 	echo "**** zdi vm stop" zdi vm stop ; \
 	echo "**** vagrant destroy -f" && yes | vagrant destroy -f ; \
 	echo "**** rm -rf ~/.vagrant.d" && rm -rf ~/.vagrant.d && \
 	echo "**** rm -rf ~/VirtualBox\ VMs/" && rm -rf ~/VirtualBox\ VMs/ && \
 	echo "**** brew cask uninstall virtualbox vagrant" && brew cask uninstall virtualbox vagrant '
-shortcut 'zbuild' 'pushd ~/projects/zendesk/zdi && gpl && \
+shortcut 'zbuild' 'pushd ~/Code/zendesk/zdi && gpl && \
 	echo "**** brew update && brew upgrade" && brew update && brew upgrade && \
 	echo "**** brew cask upgrade " && brew cask upgrade && \
 	echo "**** ./bin/onboard" && ./bin/onboard && \
@@ -254,23 +254,6 @@ shortcut 'resque_web_ssh' 'ssh -NL 9298:misc4.$1:9298 -v $1'
 shortcut 'resque_web_ssh_prod' 'resque_web_ssl pod6'
 shortcut 'resque_web_ssh_new_staging' 'ssh -NL 9298:miscb1.pod999.use1.zdsystest.com:9298  -v dba999'
 
-shortcut 'goro' 'go run outboundd.go --run-all'
-shortcut 'got' 'go test -v ./...'
-shortcut 'gotapid' 'go test -check.v github.com/zendesk/server/apitests -tags apitests --env dev'
-shortcut 'runnginx' 'sudo nginx -c /opt/outbound/nginx/nginx.conf'
-shortcut 'flush_mem_cache_server' 'echo flush_all > /dev/tcp/127.0.0.1/11211'
-alias zupdate_outbound='NO_MIGRATE=true zdi update'
-shortcut 'cbt-prod' 'cbt -instance=ob-bigtable'
-shortcut 'zodr' 'zdi outbound_server -d restart --watch'
-shortcut 'zodk' 'zdi outbound_server stop'
-shortcut 'zrdlodr' 'zdi outbound_server -ld --remote-debug restart'
-shortcut 'zrdodr' 'zdi outbound_server -d --remote-debug restart'
-shortcut 'zods' 'zdi outbound_server -d shell'
-shortcut 'ztdr' 'zdi outbound_client -d restart'
-shortcut 'cdos' 'cd ~/projects/go/src/github.com/zendesk/outbound/'
-shortcut 'geds' 'gcloud beta emulators datastore start --project=outbound-dev-170121'
-shortcut 'obctl_staging' 'obctl -e us1_staging'
-shortcut 'obctl_prod' 'obctl -e us1_prod'
 
 shortcut 'docker_cleaup_volumes' 'docker volume rm $(docker volume ls -qf dangling=true)'
 shortcut 'docker_remove_unused_images' 'docker rmi $(docker images | grep "^<none>" | awk "{print $3}")'
@@ -280,9 +263,8 @@ shortcut 'docker_shell' 'docker exec -it outbound_server /bin/bash'
 
 shortcut 'go_tool_trace' 'go tool trace -http=":3333"'
 
-shortcut 'update_ack_deadline' 'gcloud alpha pubsub subscriptions update projects/outbound-dev-170121/subscriptions/$1 --ack-deadline=$2'
+shortcut 'update_ack_deadline' 'gcloud alpha pubsub subscriptions update Code/outbound-dev-170121/subscriptions/$1 --ack-deadline=$2'
 
-shortcut 'shutdown_outboundd_touch_binary' 'docker exec -it outbound_server bash -c "touch /go/bin/outbound"'
 shortcut 'docker_login_container_registry' 'docker-credential-gcr configure-docker; gcloud auth print-access-token | docker login -u oauth2accesstoken --password-stdin https://gcr.io ; gcloud docker -- pull gcr.io/docker-images-180022/base/alpine:3.6'
 
 shortcut 'pravda_fix' 'zdi metropolis restart -i gcr.io/docker-images-180022/apps/metropolis-dev:latest && zdi pravda restart'
@@ -308,15 +290,16 @@ eval "$(pyenv init --path)"
 
 export DYLD_LIBRARY_PATH=/usr/local/Cellar/mysql/8.0.17_1/lib/
 
-shortcut 'cdso' 'cd ~/projects/zendesk/sandbox_orchestrator'
-shortcut 'cdcch' 'cd ~/projects/zendesk/customer-config-history'
+shortcut 'cdz' 'cd ~/Code/zendesk'
+shortcut 'cdso' 'cd ~/Code/zendesk/sandbox_orchestrator'
+shortcut 'cdcch' 'cd ~/Code/zendesk/customer-config-history'
 shortcut 'zsodr' 'zdi sandbox_orchestrator -d restart'
 shortcut 'zwsodr' 'zdi sandbox_orchestrator_worker -d restart'
 shortcut 'prtest' 'pipenv run py.test -vv $* --cov-report xml:cov.xml --cov'
 shortcut 'psd' 'pipenv sync --dev && pipenv clean'
 shortcut 'zsou' 'zdi sandbox_orchestrator update && psd'
 shortcut 'sointegrationtest' 'pushd integration_tests && docker-compose build && docker-compose run webapp-integration-test && popd'
-shortcut 'vagrant_file_change' 'pushd ~/projects/zendesk/zdi && vagrant plugin install vagrant-notify-forwarder && vagrant reload && popd'
+shortcut 'vagrant_file_change' 'pushd ~/Code/zendesk/zdi && vagrant plugin install vagrant-notify-forwarder && vagrant reload && popd'
 shortcut 'soreset' 'zdi sandbox_orchestrator reset_db && zdi redis restart'
 shortcut 'pyclean' 'find . -name "*.pyc" -delete && rm -rf ~/Library/Caches/black/* && pipenv --rm && psd'
 shortcut 'pcsd' 'pyclean && psd'
