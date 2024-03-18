@@ -38,6 +38,7 @@ function ezp() { e ~/.zshrc ~/.zsh_aliases ; }
 function la() { ls -A $*; }
 function l() { ls -CF $*; }
 function vimInstallPlugins() { vim +PlugInstal +qall; }
+alias n='nvim'
 
 # osx
 function clip() { xclip -se c ;}
