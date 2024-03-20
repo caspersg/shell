@@ -1,0 +1,10 @@
+
+# covential commit prefixes
+# fix: feat: build: chore: ci: docs: style: refactor: perf: test: wip:
+#
+# form
+# <prefix>(<scope/JIRA>): <description>
+# <body>
+#
+# BREAKING CHANGE: <description>
+# <footer>

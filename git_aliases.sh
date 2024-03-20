@@ -30,3 +30,5 @@ git config --global core.editor nvim
 git config merge.conflictstyle diff3
 git config --global merge.tool nvimdiff
 git config --global mergetool.keepBackup false
+
+git config --global commit.template ~/.gitmessage
