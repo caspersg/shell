@@ -31,6 +31,10 @@ function shortcut() {
 
 # general aliases/functions
 alias ll='ls -alFG'
+alias ls='ls -G'
+function la() { ls -A $*; }
+function l() { ls -CF $*; }
+
 function szp() { source ~/.zshrc ; }
 
 export EDITOR=nvim
@@ -39,9 +43,7 @@ alias n='nvim'
 
 function e() { $EDITOR $*; }
 function ezp() { e ~/.zshrc ~/.zsh_aliases ; }
-function la() { ls -A $*; }
-function l() { ls -CF $*; }
-function vimInstallPlugins() { vim +PlugInstal +qall; }
+# function vimInstallPlugins() { vim +PlugInstal +qall; }
 
 # osx
 function clip() { xclip -se c ;}
@@ -54,6 +56,7 @@ export FZF_DEFAULT_OPTS="--bind='ctrl-o:execute(code {})+abort'"
 
 # git
 alias g='git'
+# replaced with g shortcuts in git_aliases.sh
 # shortcut 'ga' 'git add -p $*'
 # shortcut 'gc' 'git commit $*'
 # shortcut 'gs' 'git status'
@@ -114,6 +117,10 @@ shortcut 'beg' 'be guard $*'
 shortcut 'binc' 'bundle install --no-deployment && bundle clean --force'
 shortcut 'rbv' 'rm -rf .bundle vendor'
 shortcut 'tld' 'tail -f log/development.log'
+function rdc() { ber deploy:clean; }
+function rd() { ber deploy; }
+function rde() { ber db:seed; }
+function rds() { ber deploy:status; }
 
 # system
 function k9() { kill -9 $*; }
@@ -166,17 +173,7 @@ function insert_start() { echo $1 | cat - $2 > temp_file.insert_start && mv temp
 export PROJECTS=~/Code
 export PROJECT_NAMES=()
 
-function rdc() { ber deploy:clean; }
-function rd() { ber deploy; }
-function rde() { ber db:seed; }
-function rds() { ber deploy:status; }
-function db_start() { pg_ctl -D /usr/local/var/postgres -l /usr/local/var/postgres/server.log start; }
-function start_postgres() { db_start; }
-function scheduler_console() {
-   DISABLE_JOB_INITIALIZER=true rails c; #ScheduledEvent.delete_all
-}
 
-function cp_consumption_data() { cp ~/EIEPin/template ~/EIEPin/$1; }
 #export JAVA_8_HOME=$(/usr/libexec/java_home -v1.8)
 #export JAVA_9_HOME=$(/usr/libexec/java_home -v9)
 #export JAVA_10_HOME=$(/usr/libexec/java_home -v10)
@@ -206,8 +203,6 @@ function cp_consumption_data() { cp ~/EIEPin/template ~/EIEPin/$1; }
 #github
 function ssh_agent_github() { ssh-add; ssh -T git@github.com; }
 
-alias ls='ls -G'
-alias ll='ls -alFG'
 
 shortcut 'ct' 'cut -d " " -f$*'
 
@@ -254,14 +249,8 @@ export DYLD_LIBRARY_PATH=/usr/local/Cellar/mysql/8.0.17_1/lib/
 shortcut 'cdz' 'cd ~/Code/zendesk'
 shortcut 'cdso' 'cd ~/Code/zendesk/sandbox_orchestrator'
 shortcut 'cdcch' 'cd ~/Code/zendesk/customer-config-history'
-shortcut 'zsodr' 'zdi sandbox_orchestrator -d restart'
-shortcut 'zwsodr' 'zdi sandbox_orchestrator_worker -d restart'
 shortcut 'prtest' 'pipenv run py.test -vv $* --cov-report xml:cov.xml --cov'
 shortcut 'psd' 'pipenv sync --dev && pipenv clean'
-shortcut 'zsou' 'zdi sandbox_orchestrator update && psd'
-shortcut 'sointegrationtest' 'pushd integration_tests && docker-compose build && docker-compose run webapp-integration-test && popd'
-shortcut 'vagrant_file_change' 'pushd ~/Code/zendesk/zdi && vagrant plugin install vagrant-notify-forwarder && vagrant reload && popd'
-shortcut 'soreset' 'zdi sandbox_orchestrator reset_db && zdi redis restart'
 shortcut 'pyclean' 'find . -name "*.pyc" -delete && rm -rf ~/Library/Caches/black/* && pipenv --rm && psd'
 shortcut 'pcsd' 'pyclean && psd'
 shortcut 'pyblackclean' 'rm -rf ~/Library/Caches/black/*'
