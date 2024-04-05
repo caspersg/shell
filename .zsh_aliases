@@ -33,16 +33,19 @@ function shortcut() {
 alias ll='ls -alFG'
 function szp() { source ~/.zshrc ; }
 
+export EDITOR=nvim
+export VISUAL=nvim
+alias n='nvim'
+
 function e() { $EDITOR $*; }
 function ezp() { e ~/.zshrc ~/.zsh_aliases ; }
 function la() { ls -A $*; }
 function l() { ls -CF $*; }
 function vimInstallPlugins() { vim +PlugInstal +qall; }
-alias n='nvim'
 
 # osx
 function clip() { xclip -se c ;}
-alias cat='bat'
+# alias cat='bat'
 #alias find='fd'
 alias preview="fzf --preview 'bat --color \"always\" {}'"
 # add support for ctrl+o to open selected file in VS Code
@@ -174,21 +177,6 @@ function scheduler_console() {
 }
 
 function cp_consumption_data() { cp ~/EIEPin/template ~/EIEPin/$1; }
-# jlls() { ~/opt/s3cmd-1.5.2/s3cmd ls s3://ap-se-2-mywave-jenkins-logs; }
-# jlsync() { ~/opt/s3cmd-1.5.2/s3cmd sync -r --no-mime-magic s3://ap-se-2-mywave-jenkins-logs/$1 ~/logs; }
-# jls() {
-#   jlsync platform-intermittent-failure-detection
-#   jlsync platform-java-ruby-pr
-#   jlsync platform-java-ruby-test-runner
-#   jlsync platform-java-ruby
-# }
-# jldl() {
-#   # platform-intermittent-failure-detection
-#   # platform-java-ruby-pr
-#   # platform-java-ruby-test-runner
-#   # platform-java-ruby
-#   ~/opt/s3cmd-1.5.2/s3cmd get -r --no-mime-magic s3://ap-se-2-mywave-jenkins-logs/$1 ~/logs
-# }
 #export JAVA_8_HOME=$(/usr/libexec/java_home -v1.8)
 #export JAVA_9_HOME=$(/usr/libexec/java_home -v9)
 #export JAVA_10_HOME=$(/usr/libexec/java_home -v10)
@@ -249,36 +237,8 @@ shortcut 'clean_unused_images' 'docker system prune --volumes'
 
 # shortcut 'zfresh' 'znuke && z cleanup && z mysql reset && z bootstrap && z outbound_server seed && z update && zrestart && zs'
 shortcut 'zmigrate' 'z migrations pull && z migrations migrate'
-shortcut 'remote_debug' 'byebug --remote "dev.zd-dev.com:3033"'
 shortcut 'migration_setup' 'pushd ../zendesk_database_migrations/ && git pull && zdi migrations pull && zdi migrations -d seed && popd'
-shortcut 'resque_web_ssh' 'ssh -NL 9298:misc4.$1:9298 -v $1'
-shortcut 'resque_web_ssh_prod' 'resque_web_ssl pod6'
-shortcut 'resque_web_ssh_new_staging' 'ssh -NL 9298:miscb1.pod999.use1.zdsystest.com:9298  -v dba999'
 
-
-shortcut 'docker_cleaup_volumes' 'docker volume rm $(docker volume ls -qf dangling=true)'
-shortcut 'docker_remove_unused_images' 'docker rmi $(docker images | grep "^<none>" | awk "{print $3}")'
-shortcut 'statsd_logs' 'docker exec -it $1 /bin/bash -c "go get -u github.com/catkins/statsd-logger/cmd/statsd-logger && statsd-logger"'
-shortcut 'statsd_trace' 'docker run --rm -it --name=datadog_agent --net=docker catkins/statsd-logger:tracing'
-shortcut 'docker_shell' 'docker exec -it outbound_server /bin/bash'
-
-shortcut 'go_tool_trace' 'go tool trace -http=":3333"'
-
-shortcut 'update_ack_deadline' 'gcloud alpha pubsub subscriptions update Code/outbound-dev-170121/subscriptions/$1 --ack-deadline=$2'
-
-shortcut 'docker_login_container_registry' 'docker-credential-gcr configure-docker; gcloud auth print-access-token | docker login -u oauth2accesstoken --password-stdin https://gcr.io ; gcloud docker -- pull gcr.io/docker-images-180022/base/alpine:3.6'
-
-shortcut 'pravda_fix' 'zdi metropolis restart -i gcr.io/docker-images-180022/apps/metropolis-dev:latest && zdi pravda restart'
-
-shortcut 'kubectl_prod' 'kubectl --context connect-production  --namespace connect-server $*'
-shortcut 'kubectl_staging' 'kubectl --context connect-staging  --namespace connect-server $*'
-
-
-# go
-shortcut 'go_imports' 'go list -f "{{ join .Imports \"\n\" }}" $1 | grep github.com/zendesk/outbound | grep -v vendor'
-shortcut 'go_deps' 'go list -f "{{ join .Deps  \"\n\"}}" $1 | grep github.com/zendesk/outbound | grep -v vendor'
-function go_graph_deps() { godepgraph -s -p cloud.google.com,golang.org,google.golang.org $1; }
-shortcut 'dot_png' 'dot -Tpng -o$1'
 
 
 # python
