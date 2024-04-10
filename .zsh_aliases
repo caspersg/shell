@@ -84,7 +84,7 @@ plugins=(vi-mode vscode pyenv asdf z zsh-navigation-tools)
 source $ZSH/oh-my-zsh.sh
 
 
-source ~/powerlevel10k/powerlevel10k.zsh-theme
+# source ~/powerlevel10k/powerlevel10k.zsh-theme
 
 # zsh vi-mode
 VI_MODE_RESET_PROMPT_ON_MODE_CHANGE=true
