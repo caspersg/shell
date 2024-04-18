@@ -16,6 +16,8 @@ git config --global alias.cp "cherry-pick"
 git config --global alias.mt "mergetool"
 git config --global alias.rc "rebase --continue"
 git config --global alias.pristine "reset --hard && git clean -dfx"
+git config --global alias.resetorigin "reset --hard && git clean -dfx"
+# shortcut 'gresetorigin' 'git reset --hard origin/`git branch --show-current`'
 
 
 git config --global alias.st "stash"

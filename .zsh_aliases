@@ -110,7 +110,7 @@ alias g='git'
 # }
 # shortcut 'gcnm' 'git commit -n -m "$*"'
 # shortcut 'gclean' 'git clean -i'
-# shortcut 'gresetorigin' 'git reset --hard origin/`git branch --show-current`'
+shortcut 'gresetorigin' 'git reset --hard origin/`git branch --show-current`'
 # shortcut 'git_recent_files' 'git whatchanged --diff-filter=A $*'
 
 # ruby
@@ -229,7 +229,9 @@ shortcut 'migration_setup' 'pushd ../zendesk_database_migrations/ && git pull &&
 shortcut 'cdz' 'cd ~/Code/zendesk'
 shortcut 'cdso' 'cd ~/Code/zendesk/sandbox_orchestrator'
 shortcut 'cdcch' 'cd ~/Code/zendesk/customer-config-history'
-shortcut 'prtest' 'pipenv run py.test -vv $* --cov-report xml:cov.xml --cov'
+# shortcut 'prtest' 'pipenv run py.test -vv $* --cov-report xml:cov.xml --cov'
+shortcut 'pytest' 'pipenv run py.test -n 1 -vv  --no-cov --disable-pytest-warnings $*'
+
 shortcut 'psd' 'pipenv sync --dev && pipenv clean'
 shortcut 'pyclean' 'find . -name "*.pyc" -delete && rm -rf ~/Library/Caches/black/* && pipenv --rm && psd'
 shortcut 'pcsd' 'pyclean && psd'
