@@ -1,15 +1,20 @@
 
-# bash history
-# Avoid duplicates
-export HISTCONTROL=ignoredups:erasedups
-export HISTSIZE=100000                   # big big history
-export HISTFILESIZE=100000               # big big history
+# auto complete from history?
+# autoload -U compinit && compinit
 
-# When the shell exits, append to the history file instead of overwriting it
-# shopt -s histappend
-trap 'history -r' USR1
-# After each command, append to the history file and reread it
-export PROMPT_COMMAND="${PROMPT_COMMAND:+$PROMPT_COMMAND$'\n'}history -a; history -c; history -r"
+# # history setup
+export HISTFILE=~/.zsh_history
+export HISTSIZE=1000000000
+export HISTFILESIZE=1000000000
+export SAVEHIST=$HISTSIZE
+setopt SHARE_HISTORY
+# not needed with SHARE_HISTORY
+# setopt INC_APPEND_HISTORY
+# export HISTTIMEFORMAT="[%F %T] "
+setopt EXTENDED_HISTORY
+setopt HIST_FIND_NO_DUPS
+setopt HIST_EXPIRE_DUPS_FIRST
+setopt HIST_IGNORE_ALL_DUPS
 
 alias h=n-history
 
