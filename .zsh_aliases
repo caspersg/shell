@@ -11,6 +11,8 @@ trap 'history -r' USR1
 # After each command, append to the history file and reread it
 export PROMPT_COMMAND="${PROMPT_COMMAND:+$PROMPT_COMMAND$'\n'}history -a; history -c; history -r"
 
+alias h=n-history
+
 # enable color support of ls and also add handy aliases
 if [ -x /usr/bin/dircolors ]; then
     test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
@@ -261,3 +263,4 @@ function dfz {
   export DOCKER_HOST=tcp://192.168.42.45:2375
 }
 dfm
+
