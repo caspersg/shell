@@ -4,12 +4,12 @@
   ;; output (uinput-sink "My KMonad output"
 
   ;; For Windows
-  input  (low-level-hook)
-  output (send-event-sink)
+  ;; input  (low-level-hook)
+  ;; output (send-event-sink)
 
   ;; For MacOS
-  ;; input  (iokit-name "my-keyboard-product-string")
-  ;; output (kext)
+  input  (iokit-name "my-keyboard-product-string")
+  output (kext)
 
   ;; This option tells KMonad to let non-configured keys act normal
   fallthrough true
