@@ -1,3 +1,4 @@
+;; haven't got kmonad working on macos yet, using karabiner elements instead
 (defcfg
   ;; For Linux
   ;; input  (device-file "/dev/input/by-id/usb-04d9_daskeyboard-event-kbd")
