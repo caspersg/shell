@@ -16,6 +16,7 @@
 )
 
 (defsrc
+    tab  q    w    e    r    t    y    u    i    o    p
     caps a    s    d    f    g    h    j    k    l    ;
 )
 
@@ -32,5 +33,6 @@
 )
 
 (deflayer homerowmods
+    tab     q        w        e        r        t   y   u        i        o        p
     KeyEsc  @met_a   @alt_s   @ctl_d   @sft_f   g   h   @sft_j   @ctl_k   @alt_l   @met_;
 )
