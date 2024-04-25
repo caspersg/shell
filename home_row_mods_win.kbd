@@ -16,8 +16,11 @@
 )
 
 (defsrc
-    tab  q    w    e    r    t    y    u    i    o    p
-    caps a    s    d    f    g    h    j    k    l    ;
+  grv  1    2    3    4    5    6    7    8    9    0    -    =    bspc
+  tab  q    w    e    r    t    y    u    i    o    p    [    ]    \
+  caps a    s    d    f    g    h    j    k    l    ;    '    ret
+  lsft z    x    c    v    b    n    m    ,    .    /    rsft
+  lctl lmet lalt           spc            ralt rmet cmp  rctl
 )
 
 (defalias
@@ -32,7 +35,23 @@
     met_; (tap-hold-next-release 200 ; rmet)
 )
 
+(defalias
+    lsy_s (tap-hold-next-release 5000 spc (layer-toggle symbols)))
+
+;; this is the base layer
 (deflayer homerowmods
-    tab     q        w        e        r        t   y   u        i        o        p
-    KeyEsc  @met_a   @alt_s   @ctl_d   @sft_f   g   h   @sft_j   @ctl_k   @alt_l   @met_;
+    grv     1        2        3        4        5      6   7        8        9        0       -    =    bspc
+    tab     q        w        e        r        t      y   u        i        o        p       [    ]    \
+    KeyEsc  @met_a   @alt_s   @ctl_d   @sft_f   g      h   @sft_j   @ctl_k   @alt_l   @met_;  '    ret
+    lsft    z        x        c        v        b      n   m        ,        .        /       rsft
+    lctl    lmet     lalt                       @lsy_s               ralt     rmet     cmp      rctl
 )
+
+(deflayer symbols
+    grv     1        2        3        4        5      6   7        8        9        0       -    =    bspc
+    tab     !        @        #        $        %      ^   &        *        \(       \)      [    ]    \
+    KeyEsc  1        2        3        4        5      6   7        8        9        0       '    ret
+    lsft    |        =        \_        [        ]      {   }        -        +        \\      rsft
+    lctl    lmet     lalt                       spc               ralt     rmet     cmp      rctl
+)
+
