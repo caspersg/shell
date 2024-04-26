@@ -1,4 +1,3 @@
-;; haven't got kmonad working on macos yet, using karabiner elements instead
 (defcfg
   ;; For Linux
   ;; input  (device-file "/dev/input/by-id/usb-04d9_daskeyboard-event-kbd")
@@ -9,7 +8,8 @@
   ;; output (send-event-sink)
 
   ;; For MacOS
-  input  (iokit-name "my-keyboard-product-string")
+  ;; input  (iokit-name "Karabiner DriverKit VirtualHIDKeyboard 1.7.0")
+  input  (iokit-name "CK530")
   output (kext)
 
   ;; This option tells KMonad to let non-configured keys act normal
@@ -17,21 +17,41 @@
 )
 
 (defsrc
-    a    s    d    f    g    h    j    k    l    ;
+  grv  1    2    3    4    5    6    7    8    9    0    -    =    bspc
+  tab  q    w    e    r    t    y    u    i    o    p    [    ]    \
+  caps a    s    d    f    g    h    j    k    l    ;    '    ret
+  lsft z    x    c    v    b    n    m    ,    .    /    rsft
+  lctl lmet lalt           spc            ralt rmet cmp  rctl
 )
 
 (defalias
     met_a (tap-hold-next-release 200 a lmet)
     alt_s (tap-hold-next-release 200 s lalt)
-    sft_d (tap-hold-next-release 200 d lsft)
-    ctl_f (tap-hold-next-release 200 f lctl)
+    ctl_d (tap-hold-next-release 200 d lctl)
+    sft_f (tap-hold-next-release 200 f lsft)
 
-    ctl_j (tap-hold-next-release 200 j rctl)
-    sft_k (tap-hold-next-release 200 k rsft)
+    sft_j (tap-hold-next-release 200 j rsft)
+    ctl_k (tap-hold-next-release 200 k rctl)
     alt_l (tap-hold-next-release 200 l lalt)
     met_; (tap-hold-next-release 200 ; rmet)
 )
 
+(defalias
+    lsy_s (tap-hold-next-release 5000 spc (layer-toggle symbols)))
+
+;; this is the base layer
 (deflayer homerowmods
-    @met_a   @alt_s   @sft_d   @ctl_f   g   h   @ctl_j   @sft_k   @alt_l   @met_;
+    grv     1        2        3        4        5      6   7        8        9        0       -    =    bspc
+    tab     q        w        e        r        t      y   u        i        o        p       [    ]    \
+    KeyEsc  @met_a   @alt_s   @ctl_d   @sft_f   g      h   @sft_j   @ctl_k   @alt_l   @met_;  '    ret
+    lsft    z        x        c        v        b      n   m        ,        .        /       rsft
+    lctl    lmet     lalt                       @lsy_s               ralt     rmet     cmp      rctl
+)
+
+(deflayer symbols
+    grv     1        2        3        4        5      6   7        8        9        0       -    =    bspc
+    tab     !        @        #        $        %      ^   &        *        \(       \)      [    ]    \
+    KeyEsc  1        2        3        4        5      6   7        8        9        0       '    ret
+    lsft    |        =        \_        [        ]      {   }        -        +        \\      rsft
+    lctl    lmet     lalt                       spc               ralt     rmet     cmp      rctl
 )
